@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.payroll.erp.entities.*;
 import com.payroll.erp.entities.repo.*;
 import com.payroll.erp.exception.SDDException;
@@ -867,6 +868,190 @@ public class UsersServiceImpl implements UsersService {
             throw new RuntimeException(e);
         } catch (Exception e) {
             logger.error("An error occurred while generating PaySlip.pdf ", e);
+        }
+        return ResponseUtils.createSuccessResponse(dtoList, new TypeReference<List<FilePathResponse>>() {
+        });
+    }
+
+    @Override
+    public ApiResponse<List<FilePathResponse>> getAttendanceRpt(String empCode) {
+
+        List<FilePathResponse> dtoList = new ArrayList<FilePathResponse>();
+
+        if (empCode == null || empCode.isEmpty()) {
+            return ResponseUtils.createFailureResponse(dtoList, new TypeReference<List<FilePathResponse>>() {
+            }, "EMP CODE CAN NOT BE NULL OR EMPTY", HttpStatus.OK.value());
+        }
+        try {
+            Document document = new Document(PageSize.A4);
+
+            File folder = new File(HelperUtils.LASTFOLDERPATH);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            String timemilisec = String.valueOf(System.currentTimeMillis());
+            String path = folder.getAbsolutePath() + "/" + "AttendanceRpt" + timemilisec + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(new File(path)));
+
+            document.open();
+            Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+            Font boldFont1 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
+            Font cellFont = new Font(Font.FontFamily.HELVETICA, 8);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.add(new Chunk("INTEK" + " "+ " DAILY ATTENDANCE ", boldFont));
+            paragraph.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(paragraph);
+            document.add(new Paragraph("\n"));
+
+            Paragraph paragraph1 = new Paragraph();
+            paragraph1.add(new Chunk("EMP NAME:" + " "+ " Aravind Kumar ", boldFont1));
+            paragraph1.add(new Chunk(new VerticalPositionMark()));
+            paragraph1.add(new Chunk("EMP CODE:" + " "+ " IN1234 ", boldFont1));
+            document.add(paragraph1);
+            document.add(new Paragraph("\n"));
+
+            PdfPTable tables = new PdfPTable(5);
+            tables.setWidthPercentage(100);
+            PdfPCell c1 = new PdfPCell(new Phrase("DATE ", boldFont1));
+            PdfPCell c2 = new PdfPCell(new Phrase("IN-COMING", boldFont1));
+            PdfPCell c3 = new PdfPCell(new Phrase("OUT-GOING ", boldFont1));
+            PdfPCell c4 = new PdfPCell(new Phrase("HOURS.", boldFont1));
+            PdfPCell c5 = new PdfPCell(new Phrase("REMARKS", boldFont1));
+
+            c1.setPadding(5);
+            c2.setPadding(5);
+            c3.setPadding(5);
+            c4.setPadding(5);
+            c5.setPadding(5);
+
+            tables.addCell(c1);
+            tables.addCell(c2);
+            tables.addCell(c3);
+            tables.addCell(c4);
+            tables.addCell(c5);
+            document.add(tables);
+
+            PdfPTable tables1 = new PdfPTable(5);
+            tables1.setWidthPercentage(100);
+            PdfPCell c11 = new PdfPCell(new Phrase("01-01-2023 ", cellFont));
+            PdfPCell c21 = new PdfPCell(new Phrase("09:30 am", cellFont));
+            PdfPCell c31 = new PdfPCell(new Phrase("06:00 pm ", cellFont));
+            PdfPCell c41 = new PdfPCell(new Phrase("08 hours:30 min", cellFont));
+            PdfPCell c51 = new PdfPCell(new Phrase("REMARKS", cellFont));
+
+            c11.setPadding(5);
+            c21.setPadding(5);
+            c31.setPadding(5);
+            c41.setPadding(5);
+            c51.setPadding(5);
+
+            tables1.addCell(c11);
+            tables1.addCell(c21);
+            tables1.addCell(c31);
+            tables1.addCell(c41);
+            tables1.addCell(c51);
+            document.add(tables1);
+            document.add(new Paragraph("\n"));
+
+            PdfPCell c021 = new PdfPCell(new Phrase("Work Satisfaction Form", boldFont1));
+            c021.setPadding(5);
+            c021.setColspan(7);
+            c021.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell c111 = new PdfPCell(new Phrase("Tick mark on any above field", boldFont1));
+            c111.setPadding(5);
+            c111.setColspan(7);
+            c111.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell emptyCell = new PdfPCell(new Phrase("", boldFont1));
+            emptyCell.setBorder(Rectangle.NO_BORDER);
+
+            PdfPCell emptyRow = new PdfPCell(new Phrase("", boldFont1));
+            emptyRow.setColspan(7);
+            emptyRow.setBorder(Rectangle.NO_BORDER);
+            emptyRow.setFixedHeight(10f);
+
+            PdfPTable tables3 = new PdfPTable(7);
+            tables3.setWidths(new float[] {1f,0.1f,0.5f,0.1f,1f,0.1f,0.5f});
+            PdfPCell c031 = new PdfPCell(new Phrase("Very Bad:", boldFont1));
+            PdfPCell c033 = new PdfPCell(new Phrase("", cellFont));
+            PdfPCell c035 = new PdfPCell(new Phrase("Good:", boldFont1));
+            PdfPCell c037 = new PdfPCell(new Phrase("", cellFont));
+            PdfPCell c038 = new PdfPCell(new Phrase("Bad:", boldFont1));
+            PdfPCell c040 = new PdfPCell(new Phrase("", cellFont));
+            PdfPCell c042 = new PdfPCell(new Phrase("Good but Need Improvement:", boldFont1));
+            PdfPCell c044 = new PdfPCell(new Phrase("", cellFont));
+            PdfPCell c045 = new PdfPCell(new Phrase("Average:", boldFont1));
+            PdfPCell c046 = new PdfPCell(new Phrase("", cellFont));
+            c042.setRowspan(3);
+            c044.setRowspan(3);
+            c031.setPadding(5);
+            c033.setPadding(5);
+            c035.setPadding(5);
+            c037.setPadding(5);
+            c038.setPadding(5);
+            c040.setPadding(5);
+            c042.setPadding(5);
+            c044.setPadding(5);
+            c045.setPadding(5);
+            c046.setPadding(5);
+
+            tables3.addCell(c021);
+            tables3.addCell(emptyRow);
+            tables3.addCell(c031);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c033);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c035);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c037);
+            tables3.addCell(emptyRow);
+            tables3.addCell(c038);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c040);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c042);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c044);
+            tables3.addCell(emptyRow);
+            tables3.addCell(c045);
+            tables3.addCell(emptyCell);
+            tables3.addCell(c046);
+            tables3.addCell(emptyCell);
+            tables3.addCell(emptyCell);
+            tables3.addCell(emptyCell);
+            tables3.addCell(emptyCell);
+            tables3.addCell(emptyRow);
+            tables3.addCell(c111);
+
+            PdfPTable tables4 = new PdfPTable(1);
+            PdfPCell c022 = new PdfPCell(new Phrase("Verify By", boldFont1));
+            PdfPCell c0222 = new PdfPCell(new Phrase("nabha kishore", cellFont));
+            c022.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c022.setPadding(5);
+            c0222.setPadding(5);
+            tables4.addCell(c022);
+            tables4.addCell(c0222);
+
+            PdfPTable tables5 = new PdfPTable(2);
+            tables5.setWidthPercentage(100);
+
+            tables5.setWidths(new float[] {70,30});
+            tables5.addCell(tables3);
+            tables5.addCell(tables4);
+
+            document.add(tables5);
+
+            document.close();
+            FilePathResponse dto = new FilePathResponse();
+            dto.setPath(HelperUtils.FILEPATH + "AttendanceRpt"+ timemilisec + ".pdf");
+            dto.setFileName("AttendanceRpt" + timemilisec + ".pdf");
+            dtoList.add(dto);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            logger.error("An error occurred while generating AttendanceRpt.pdf ", e);
         }
         return ResponseUtils.createSuccessResponse(dtoList, new TypeReference<List<FilePathResponse>>() {
         });

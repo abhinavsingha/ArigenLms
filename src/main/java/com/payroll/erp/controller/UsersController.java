@@ -47,6 +47,10 @@ public class UsersController {
     public ResponseEntity<ApiResponse<List<FilePathResponse>>> getSalrySlip(@PathVariable(value = "empCode") String empCode) {
         return new ResponseEntity<>(usersService.getSalrySlip(empCode), HttpStatus.OK);
     }
+    @GetMapping("/getAttendanceRpt/{empCode}")
+    public ResponseEntity<ApiResponse<List<FilePathResponse>>> getAttendanceRpt(@PathVariable(value = "empCode") String empCode) {
+        return new ResponseEntity<>(usersService.getAttendanceRpt(empCode), HttpStatus.OK);
+    }
     @GetMapping("/getTdsSlip/{empCode}")
     public ResponseEntity<ApiResponse<List<FilePathResponse>>> getTdsSlip(@PathVariable(value = "empCode") String empCode) {
         return new ResponseEntity<>(usersService.getTdsSlip(empCode), HttpStatus.OK);

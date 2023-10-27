@@ -17,6 +17,7 @@ public interface UsersService {
     ApiResponse<DefaultResponse> saveEmpEduInfo(List<EmpEduInfoReq> empEduInfoReq);
     ApiResponse<DefaultResponse> saveEmpProfInfo(List<EmpProfessionalInfoReq> empProfessionalInfoReq);
     ApiResponse<List<FilePathResponse>> getSalrySlip(String empCode);
+    ApiResponse<List<FilePathResponse>> getAttendanceRpt(String empCode);
     ApiResponse<List<FilePathResponse>> getTdsSlip(String empCode);
     ApiResponse<List<UserDetailsReq>> getAllEmployee();
     ApiResponse<List<UserDetailsReq>> getEmployee(String empCode);
