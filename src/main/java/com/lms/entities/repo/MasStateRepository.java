@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface MasStateRepository extends JpaRepository<MasState, String> {
+public interface MasStateRepository extends JpaRepository<MasState, Long> {
     List<MasState> findByCountryId(int countryId);
 }

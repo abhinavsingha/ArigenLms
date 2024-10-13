@@ -1,5 +1,6 @@
 package com.lms.controller;
 
+import com.lms.entities.DgMasInvestigation;
 import com.lms.entities.MasBloodGroup;
 import com.lms.entities.MasGender;
 import com.lms.responce.ApiResponse;
@@ -103,4 +104,20 @@ public class MasterController {
         log.debug("Response for getGenderById: {}", response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+    @GetMapping("/getAllInvestigation")
+    public ResponseEntity<ApiResponse<List<DgMasInvestigation>>> getAllInvestigation() {
+        ApiResponse<List<DgMasInvestigation>> response = masterService.getAllInvestigation();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/getInvestigationnames/{search}")
+    public ResponseEntity<ApiResponse<List<DgMasInvestigation>>> GetInvestigationNames(String search) {
+        ApiResponse<List<DgMasInvestigation>> response = masterService.GetInvestigationNames(search);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
 }

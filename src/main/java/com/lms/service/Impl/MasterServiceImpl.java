@@ -1,9 +1,11 @@
 package com.lms.service.Impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.lms.entities.DgMasInvestigation;
 import com.lms.entities.MasBloodGroup;
 import com.lms.entities.MasGender;
 import com.lms.entities.MasState;
+import com.lms.entities.repo.DgMasInvestigationRepository;
 import com.lms.entities.repo.MasBloodGroupRepository;
 import com.lms.entities.repo.MasGenderRepository;
 import com.lms.entities.repo.MasStateRepository;
@@ -36,6 +38,9 @@ public class MasterServiceImpl implements MasterService {
 
     @Autowired
     MasBloodGroupRepository masBloodGroupRepository;
+
+    @Autowired
+    DgMasInvestigationRepository dgMasInvestigationRepository;
 
     @Override
     public ApiResponse<List<StateResponse>> getStateData(int countryId) {
@@ -96,10 +101,10 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public ApiResponse<Optional<StateResponse>> getStateDataByStateId(int stateId) {
+    public ApiResponse<Optional<StateResponse>> getStateDataByStateId(long stateId) {
         logger.info("Fetching state with ID {}", stateId);
 
-        Optional<MasState> stateById = masStateRepository.findById(String.valueOf(stateId));
+        Optional<MasState> stateById = masStateRepository.findById(stateId);
         if (stateById.isEmpty()) {
             logger.error("State with ID {} not found", stateId);
             return ResponseUtils.createNotFoundResponse("State with ID " + stateId + " not found", HttpStatus.NOT_FOUND.value());
@@ -137,10 +142,10 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public ApiResponse<Optional<MasBloodGroup>> getBloodGroupByBloodGroupId(int bloodGroupId) {
+    public ApiResponse<Optional<MasBloodGroup>> getBloodGroupByBloodGroupId(long bloodGroupId) {
         logger.info("Fetching blood group with ID {}", bloodGroupId);
 
-        Optional<MasBloodGroup> bloodGroup = masBloodGroupRepository.findById(String.valueOf(bloodGroupId));
+        Optional<MasBloodGroup> bloodGroup = masBloodGroupRepository.findById(bloodGroupId);
         if (bloodGroup.isEmpty()) {
             logger.error("Blood group with ID {} not found", bloodGroupId);
             return ResponseUtils.createNotFoundResponse("Blood group with ID " + bloodGroupId + " not found", HttpStatus.NOT_FOUND.value());
@@ -167,10 +172,10 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public ApiResponse<Optional<MasGender>> getGenderById(int genderId) {
+    public ApiResponse<Optional<MasGender>> getGenderById(long genderId) {
         logger.info("Fetching gender with ID {}", genderId);
 
-        Optional<MasGender> gender = masGenderRepository.findById(String.valueOf(genderId));
+        Optional<MasGender> gender = masGenderRepository.findById(genderId);
         if (gender.isEmpty()) {
             logger.error("Gender with ID {} not found", genderId);
             return ResponseUtils.createNotFoundResponse("Gender with ID " + genderId + " not found", HttpStatus.NOT_FOUND.value());
@@ -180,4 +185,21 @@ public class MasterServiceImpl implements MasterService {
         return ResponseUtils.createSuccessResponse(gender, new TypeReference<Optional<MasGender>>() {
         });
     }
+
+    @Override
+    public ApiResponse<List<DgMasInvestigation>> getAllInvestigation() {
+        List<DgMasInvestigation> investigations = dgMasInvestigationRepository.findAll();
+        return ResponseUtils.createSuccessResponse(investigations, new TypeReference<List<DgMasInvestigation>>() {
+        });
+    }
+
+    @Override
+    public ApiResponse<List<DgMasInvestigation>> GetInvestigationNames(String search) {
+        List<DgMasInvestigation> investigations=dgMasInvestigationRepository.findByNameContaining(search);
+
+        return ResponseUtils.createSuccessResponse(investigations, new TypeReference<List<DgMasInvestigation>>() {
+        });
+    }
+
+
 }

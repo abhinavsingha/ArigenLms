@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AUTH_WHITELIST).permitAll()  // Swagger paths
                         .requestMatchers("/authController/login").permitAll()
+                        .requestMatchers("/masterController/**").permitAll()
                         .requestMatchers("/authController/getEmpName/{empCode}").permitAll()
                         .requestMatchers("/authController/create-first-users").permitAll()
                         .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
