@@ -23,4 +23,6 @@ public class StateResponse {
     private String lastChgTime;
 
     private String hicCode;
+
+    private long countryId;
 }

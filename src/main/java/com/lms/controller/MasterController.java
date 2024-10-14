@@ -112,9 +112,9 @@ public class MasterController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/getInvestigationnames/{search}")
-    public ResponseEntity<ApiResponse<List<DgMasInvestigation>>> GetInvestigationNames(String search) {
-        ApiResponse<List<DgMasInvestigation>> response = masterService.GetInvestigationNames(search);
+    @GetMapping("/getInvestigationNames/{search}")
+    public ResponseEntity<ApiResponse<List<DgMasInvestigation>>> getInvestigationNames(@PathVariable("search") String search) {
+        ApiResponse<List<DgMasInvestigation>> response = masterService.getInvestigationNames(search);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
