@@ -27,5 +27,5 @@ public interface MasterService {
 
     ApiResponse<List<DgMasInvestigation>> getAllInvestigation();
 
-    ApiResponse<List<DgMasInvestigation>> GetInvestigationNames(String search);
+    ApiResponse<List<DgMasInvestigation>> getInvestigationNames(String search);
 }

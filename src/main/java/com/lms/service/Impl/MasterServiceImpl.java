@@ -194,12 +194,13 @@ public class MasterServiceImpl implements MasterService {
     }
 
     @Override
-    public ApiResponse<List<DgMasInvestigation>> GetInvestigationNames(String search) {
+    public ApiResponse<List<DgMasInvestigation>> getInvestigationNames(String search) {
         List<DgMasInvestigation> investigations=dgMasInvestigationRepository.findByNameContaining(search);
 
         return ResponseUtils.createSuccessResponse(investigations, new TypeReference<List<DgMasInvestigation>>() {
         });
     }
+
 
 
 }
